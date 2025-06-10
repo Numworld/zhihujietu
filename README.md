@@ -50,7 +50,7 @@ git clone https://github.com/YOUR_USERNAME/zhihujietu-extension.git
 
 ```
 zhihujietu-extension/
-├── manifest.json          # 扩展配置文件
+├── manifest.json         # 扩展配置文件
 ├── popup.html            # 扩展弹窗页面
 ├── popup.js              # 弹窗逻辑
 ├── content.js            # 内容脚本，负责提取页面内容
