@@ -6,9 +6,6 @@
 
 - 🎯 **智能提取**：自动识别知乎回答页面，提取问题标题、回答者信息和回答内容
 - 🎨 **精美卡片**：生成具有知乎风格的精美回答卡片
-- 📱 **响应式设计**：支持不同尺寸的卡片生成
-- 💾 **本地存储**：提取的内容会自动保存，方便重复使用
-- 🖼️ **图片导出**：支持将生成的卡片导出为PNG图片
 - 🔄 **实时预览**：提取内容后可实时预览效果
 
 ## 安装方法
@@ -46,8 +43,8 @@ git clone https://github.com/YOUR_USERNAME/zhihujietu-extension.git
    - 在新打开的页面中查看生成的卡片
 
 4. **导出图片**
-   - 在卡片生成页面，点击「下载卡片」按钮
-   - 卡片将以PNG格式保存到本地
+   - 在卡片生成页面，点击「保存卡片」按钮
+   - 可以选择将卡片以HTML格式保存到本地，也可选择复制卡片内容到剪贴板
 
 ## 项目结构
 
@@ -73,26 +70,12 @@ zhihujietu-extension/
 ## 提取的内容
 
 - ✅ 问题标题
-- ✅ 回答者姓名
+- ✅ 回答者用户名
 - ✅ 回答者描述/签名
 - ✅ 回答内容（纯文本，自动过滤图片和链接）
 - ✅ 点赞数
 
-## 开发说明
-
-### 本地开发
-
-1. 克隆项目
-```bash
-git clone https://github.com/YOUR_USERNAME/zhihujietu-extension.git
-cd zhihujietu-extension
-```
-
-2. 在Chrome中加载扩展（参考安装方法）
-
-3. 修改代码后，在扩展管理页面点击刷新按钮重新加载
-
-### 文件说明
+## 文件说明
 
 - `manifest.json`：扩展的配置文件，定义权限、脚本等
 - `popup.html/js`：扩展图标点击后显示的弹窗
@@ -120,16 +103,6 @@ A: 目前只支持知乎，后续可能会扩展到其他问答平台。
 - ✨ 支持知乎回答内容提取
 - ✨ 支持生成精美分享卡片
 - ✨ 支持卡片网页html格式导出
-
-## 贡献指南
-
-欢迎提交Issue和Pull Request！
-
-1. Fork 本项目
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 打开Pull Request
 
 ## 许可证
 
