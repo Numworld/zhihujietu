@@ -13,10 +13,7 @@
 
 ## 安装方法
 
-1. 下载或克隆此项目到本地
-```bash
-git clone https://github.com/username/zhihujietu-extension.git
-```
+1. 下载此项目到本地的项目文件夹
 
 2. 打开Chrome浏览器，进入扩展管理页面
    - 在地址栏输入 `chrome://extensions/`
@@ -24,7 +21,7 @@ git clone https://github.com/username/zhihujietu-extension.git
 
 3. 开启「开发者模式」（页面右上角的开关）
 
-4. 点击「加载已解压的扩展程序」
+4. 点击「加载已解压的扩展程序」，
 
 5. 选择项目文件夹
 
