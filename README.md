@@ -1,4 +1,4 @@
-# 知乎回答卡片生成器
+# 知乎回答卡片生成器助手
 
 一个Chrome浏览器扩展，可以一键提取知乎回答内容并生成精美的分享卡片。
 
@@ -15,7 +15,7 @@
 
 1. 下载或克隆此项目到本地
 ```bash
-git clone https://github.com/YOUR_USERNAME/zhihujietu-extension.git
+git clone https://github.com/username/zhihujietu-extension.git
 ```
 
 2. 打开Chrome浏览器，进入扩展管理页面
@@ -60,8 +60,8 @@ zhihujietu-extension/
 ├── generator.html        # 卡片生成页面
 ├── generator.js          # 卡片生成逻辑
 ├── icon.svg              # 扩展图标
-├── icons/
-│   └── icon.svg          # 不同尺寸的图标
+├── LICENSE               # 许可证文件
+├── .gitignore            # Git忽略文件
 └── README.md             # 项目说明文档
 ```
 
@@ -92,7 +92,7 @@ zhihujietu-extension/
 
 1. 克隆项目
 ```bash
-git clone https://github.com/your-username/zhihujietu-extension.git
+git clone https://github.com/username/zhihujietu-extension.git
 cd zhihujietu-extension
 ```
 
@@ -123,7 +123,7 @@ A: 目前只支持知乎，后续可能会扩展到其他问答平台。
 
 ## 更新日志
 
-### v1.0.0 (2025-06-10)
+### v1.0.0
 - 🎉 首次发布
 - ✨ 支持知乎回答内容提取
 - ✨ 支持生成精美分享卡片
@@ -147,7 +147,7 @@ A: 目前只支持知乎，后续可能会扩展到其他问答平台。
 
 如有问题或建议，请通过以下方式联系：
 
-- 提交 [Issue](https://github.com/YOUR_USERNAME/zhihujietu-extension/issues)
+- 提交 Issue 反馈问题和建议
 
 ---
 
