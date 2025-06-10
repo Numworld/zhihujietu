@@ -34,7 +34,7 @@ function extractZhihuContent() {
             document.querySelector('.Post-RichText');
         
         if (contentElement) {
-            // 移除图片、链接等元素，只保留文本
+            // 移除图片、链接等元素，保留文本和换行
             const clonedElement = contentElement.cloneNode(true);
             const images = clonedElement.querySelectorAll('img, figure, .RichContent-image');
             const links = clonedElement.querySelectorAll('a');
@@ -45,7 +45,38 @@ function extractZhihuContent() {
                 link.parentNode.replaceChild(text, link);
             });
             
-            answerContent = clonedElement.textContent?.trim() || '';
+            // 更好地保留段落结构
+            const paragraphs = clonedElement.querySelectorAll('p');
+            let textParts = [];
+            
+            if (paragraphs.length > 0) {
+                // 如果有段落标签，按段落提取
+                paragraphs.forEach(p => {
+                    const text = p.textContent.trim();
+                    if (text) {
+                        textParts.push(text);
+                    }
+                });
+                answerContent = textParts.join('\n\n');
+            } else {
+                // 如果没有段落标签，尝试按div或其他块级元素提取
+                const blocks = clonedElement.querySelectorAll('div, section, article');
+                if (blocks.length > 0) {
+                    blocks.forEach(block => {
+                        const text = block.textContent.trim();
+                        if (text && !text.includes('\n')) {
+                            textParts.push(text);
+                        }
+                    });
+                    if (textParts.length > 0) {
+                        answerContent = textParts.join('\n\n');
+                    } else {
+                        answerContent = clonedElement.textContent?.trim() || '';
+                    }
+                } else {
+                    answerContent = clonedElement.textContent?.trim() || '';
+                }
+            }
         }
 
         // 限制内容长度

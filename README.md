@@ -1,4 +1,4 @@
-# 知乎回答卡片生成器
+# 知乎回答卡片生成器助手
 
 一个Chrome浏览器扩展，可以一键提取知乎回答内容并生成精美的分享卡片。
 
@@ -13,7 +13,10 @@
 
 ## 安装方法
 
-1. 下载此项目到本地的项目文件夹
+1. 下载或克隆此项目到本地
+```bash
+git clone https://github.com/YOUR_USERNAME/zhihujietu-extension.git
+```
 
 2. 打开Chrome浏览器，进入扩展管理页面
    - 在地址栏输入 `chrome://extensions/`
@@ -21,7 +24,7 @@
 
 3. 开启「开发者模式」（页面右上角的开关）
 
-4. 点击「加载已解压的扩展程序」，
+4. 点击「加载已解压的扩展程序」
 
 5. 选择项目文件夹
 
@@ -89,7 +92,7 @@ zhihujietu-extension/
 
 1. 克隆项目
 ```bash
-git clone https://github.com/username/zhihujietu-extension.git
+git clone https://github.com/YOUR_USERNAME/zhihujietu-extension.git
 cd zhihujietu-extension
 ```
 

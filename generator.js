@@ -216,3 +216,113 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 });
+
+// 保存卡片功能
+function saveCardAsImage() {
+    const saveButton = document.getElementById('saveButton');
+    const card = document.getElementById('zhihuCard');
+    
+    if (!card) {
+        alert('未找到卡片元素');
+        return;
+    }
+    
+    // 禁用按钮并显示加载状态
+    saveButton.disabled = true;
+    saveButton.textContent = '生成中...';
+    
+    // 添加超时保护，防止卡住
+    const timeout = setTimeout(() => {
+        fallbackSaveMethod();
+    }, 5000); // 5秒超时
+    
+    try {
+        // 直接使用备用方法，因为SVG转图片在某些浏览器中有限制
+        clearTimeout(timeout);
+        fallbackSaveMethod();
+        
+    } catch (error) {
+        clearTimeout(timeout);
+        fallbackSaveMethod();
+    }
+}
+
+// 保存方法：提供多种保存选项
+function fallbackSaveMethod() {
+    const saveButton = document.getElementById('saveButton');
+    const card = document.getElementById('zhihuCard');
+    
+    try {
+        // 询问用户保存方式
+        const choice = confirm('选择保存方式：\n\n确定 - 保存为HTML文件（推荐）\n取消 - 复制卡片内容到剪贴板');
+        
+        if (choice) {
+            // 保存为HTML文件
+            const htmlContent = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知乎回答卡片</title>
+    <style>
+        ${document.querySelector('style').textContent}
+        body { padding: 20px; background: white; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .save-button { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        ${card.outerHTML}
+    </div>
+    <p style="text-align: center; color: #666; margin-top: 20px; font-size: 14px;">
+        提示：您可以使用浏览器的截图功能或打印功能保存此卡片
+    </p>
+</body>
+</html>`;
+            
+            const blob = new Blob([htmlContent], {type: 'text/html;charset=utf-8'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `知乎回答卡片_${new Date().getTime()}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('✅ HTML文件已保存！\n\n使用方法：\n1. 打开下载的HTML文件\n2. 使用浏览器截图或打印功能保存为图片');
+        } else {
+            // 复制内容到剪贴板
+            const textContent = `${document.getElementById('displayQuestionTitle').textContent}\n\n${document.getElementById('displayAnswerContent').textContent}\n\n作者：${document.getElementById('displayAuthorName').textContent}\n${document.getElementById('displayAuthorDesc').textContent}\n${document.getElementById('displayLikes').textContent}`;
+            
+            navigator.clipboard.writeText(textContent).then(() => {
+                alert('✅ 卡片内容已复制到剪贴板！');
+            }).catch(() => {
+                // 如果剪贴板API失败，显示内容让用户手动复制
+                const textarea = document.createElement('textarea');
+                textarea.value = textContent;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('✅ 卡片内容已复制到剪贴板！');
+            });
+        }
+        
+    } catch (error) {
+        alert('❌ 保存失败，请尝试手动截图保存。\n\n建议：\n1. 使用浏览器的截图功能\n2. 或按F12打开开发者工具，右键卡片选择"截图节点"');
+    } finally {
+        // 恢复按钮状态
+        saveButton.disabled = false;
+        saveButton.textContent = '保存卡片';
+    }
+}
+
+// 添加保存按钮事件监听器
+document.addEventListener('DOMContentLoaded', function() {
+    const saveButton = document.getElementById('saveButton');
+    if (saveButton) {
+        saveButton.addEventListener('click', saveCardAsImage);
+    }
+});
