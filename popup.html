@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知乎内容提取器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 350px;
+            min-height: 400px;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .header {
+            padding: 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .status {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .status.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .status.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        .status.warning {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn.primary {
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+        }
+
+        .btn.primary:hover {
+            background: white;
+        }
+
+        .content-preview {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .content-item {
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .content-item strong {
+            display: block;
+            margin-bottom: 3px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .content-item span {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .footer {
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 11px;
+            opacity: 0.7;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎨 知乎卡片生成器</h1>
+        <p>一键提取回答内容并生成精美卡片</p>
+    </div>
+
+    <div class="content">
+        <div id="status" class="status">
+            <span id="statusText">正在检查当前页面...</span>
+        </div>
+
+        <div id="actions">
+            <button id="extractBtn" class="btn primary" disabled>
+                <span class="loading hidden" id="loading"></span>
+                <span id="extractText">提取当前页面内容</span>
+            </button>
+            
+            <button id="openGeneratorBtn" class="btn">
+                📱 打开卡片生成器
+            </button>
+            
+            <button id="viewContentBtn" class="btn hidden">
+                👀 查看提取的内容
+            </button>
+            
+            <button id="clearBtn" class="btn hidden">
+                🗑️ 清除存储的内容
+            </button>
+        </div>
+
+        <div id="contentPreview" class="content-preview hidden">
+            <div class="content-item">
+                <strong>问题标题:</strong>
+                <span id="previewTitle"></span>
+            </div>
+            <div class="content-item">
+                <strong>回答者:</strong>
+                <span id="previewAuthor"></span>
+            </div>
+            <div class="content-item">
+                <strong>回答内容:</strong>
+                <span id="previewContent"></span>
+            </div>
+            <div class="content-item">
+                <strong>点赞数:</strong>
+                <span id="previewLikes"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2024 知乎卡片生成器</p>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

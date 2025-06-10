@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "知乎回答卡片生成器助手",
+  "version": "1.0.0",
+  "description": "一键提取知乎回答内容并生成精美卡片",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://www.zhihu.com/*"
+  ],
+  "content_scripts": [{
+    "matches": ["https://www.zhihu.com/question/*/answer/*", "https://www.zhihu.com/answer/*"],
+    "js": ["content.js"]
+  }],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "知乎回答卡片生成器"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["generator.html"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "icons": {
+    "16": "icon.svg",
+    "48": "icon.svg",
+    "128": "icon.svg"
+  }
+}

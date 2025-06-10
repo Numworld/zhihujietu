@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知乎回答卡片生成器</title>
+    <style>
+        :root {
+            --zhihu-blue: #0066ff;
+            --zhihu-blue-light: #1677ff;
+            --zhihu-blue-dark: #0052cc;
+            --text-primary: #1a1a1a;
+            --text-secondary: #646464;
+            --text-tertiary: #8c8c8c;
+            --border-light: #e8e8e8;
+            --border-medium: #d9d9d9;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #f0f2f5;
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --radius-large: 16px;
+            --radius-medium: 12px;
+            --radius-small: 8px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --font-size-xs: 12px;
+            --font-size-sm: 14px;
+            --font-size-md: 16px;
+            --font-size-lg: 18px;
+            --font-size-xl: 20px;
+            --font-size-xxl: 24px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: var(--spacing-lg);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+        }
+        
+        .auto-load-notice {
+            background: linear-gradient(135deg, #e6f7ff 0%, #f0f9ff 100%);
+            border: 1px solid var(--zhihu-blue-light);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-medium);
+            margin-bottom: var(--spacing-lg);
+            display: none;
+            text-align: center;
+            color: var(--zhihu-blue-dark);
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(22, 119, 255, 0.1);
+        }
+        
+        .zhihu-card {
+            width: 100%;
+            aspect-ratio: 4/5;
+            background: var(--bg-primary);
+            border-radius: var(--radius-large);
+            padding: var(--spacing-xl);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .zhihu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--zhihu-blue) 0%, var(--zhihu-blue-light) 100%);
+        }
+        
+        .zhihu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            gap: var(--spacing-md);
+        }
+        
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--zhihu-blue) 0%, var(--zhihu-blue-light) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: var(--font-size-lg);
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 102, 255, 0.2);
+        }
+        
+        .user-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            margin: 0 0 var(--spacing-xs) 0;
+            font-size: var(--font-size-md);
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+        
+        .user-desc {
+            color: var(--text-secondary);
+            margin: 0;
+            font-size: var(--font-size-sm);
+            font-weight: 400;
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .question-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-primary);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .answer-content {
+            font-size: var(--font-size-sm);
+            line-height: 1.7;
+            flex: 1;
+            color: var(--text-secondary);
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 8;
+            -webkit-box-orient: vertical;
+            margin-bottom: var(--spacing-lg);
+            word-break: break-word;
+            hyphens: auto;
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border-light);
+            margin-top: auto;
+        }
+        
+        .stats {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--text-tertiary);
+            font-size: var(--font-size-xs);
+            font-weight: 500;
+        }
+        
+        .stats::before {
+            content: '👍';
+            font-size: var(--font-size-sm);
+            margin-right: var(--spacing-xs);
+        }
+        
+        .zhihu-logo {
+            color: var(--zhihu-blue);
+            font-weight: 700;
+            font-size: var(--font-size-md);
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+        
+        .zhihu-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--zhihu-blue) 0%, transparent 100%);
+            border-radius: 1px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            body {
+                padding: var(--spacing-md);
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            .zhihu-card {
+                padding: var(--spacing-lg);
+                aspect-ratio: 3/4;
+            }
+            
+            .avatar {
+                width: 40px;
+                height: 40px;
+                font-size: var(--font-size-md);
+            }
+            
+            .user-name {
+                font-size: var(--font-size-sm);
+            }
+            
+            .user-desc {
+                font-size: var(--font-size-xs);
+            }
+            
+            .question-title {
+                font-size: var(--font-size-md);
+                -webkit-line-clamp: 3;
+            }
+            
+            .answer-content {
+                font-size: var(--font-size-xs);
+                -webkit-line-clamp: 10;
+            }
+        }
+        
+        /* 打印样式 */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .zhihu-card {
+                box-shadow: none;
+                border: 1px solid var(--border-medium);
+            }
+            
+            .zhihu-card:hover {
+                transform: none;
+            }
+        }
+        
+        /* 深色模式支持 */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text-primary: #ffffff;
+                --text-secondary: #b3b3b3;
+                --text-tertiary: #8c8c8c;
+                --bg-primary: #1a1a1a;
+                --bg-secondary: #2a2a2a;
+                --border-light: #333333;
+                --border-medium: #404040;
+            }
+            
+            body {
+                background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="autoLoadNotice" class="auto-load-notice">
+            已自动加载浏览器扩展提取的内容 ✓
+        </div>
+        
+        <div id="zhihuCard" class="zhihu-card">
+            <div class="card-header">
+                <div id="avatar" class="avatar">知</div>
+                <div class="user-info">
+                    <p id="displayAuthorName" class="user-name">知乎用户</p>
+                    <p id="displayAuthorDesc" class="user-desc">分享知识、经验和见解</p>
+                </div>
+            </div>
+            
+            <div id="displayQuestionTitle" class="question-title">加载中...</div>
+            
+            <div id="displayAnswerContent" class="answer-content">加载中...</div>
+            
+            <div class="card-footer">
+                <div class="stats">
+                    <span id="displayLikes">0 赞同</span>
+                </div>
+                
+                <div class="zhihu-logo">知乎</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="generator.js"></script>
+</body>
+</html>

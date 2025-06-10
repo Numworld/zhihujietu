@@ -1,0 +1,33 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0066ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0052cc;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 圆形背景 -->
+  <circle cx="64" cy="64" r="60" fill="url(#bgGradient)" stroke="#ffffff" stroke-width="2"/>
+  
+  <!-- 卡片背景 -->
+  <rect x="20" y="30" width="88" height="68" rx="8" ry="8" fill="#ffffff" opacity="0.95"/>
+  
+  <!-- 知乎logo样式的"知"字 -->
+  <text x="64" y="50" font-family="serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#0066ff">知</text>
+  
+  <!-- 文本线条 -->
+  <line x1="28" y1="58" x2="100" y2="58" stroke="#666666" stroke-width="1.5" opacity="0.7"/>
+  <line x1="28" y1="65" x2="85" y2="65" stroke="#666666" stroke-width="1.5" opacity="0.5"/>
+  <line x1="28" y1="72" x2="95" y2="72" stroke="#666666" stroke-width="1.5" opacity="0.5"/>
+  
+  <!-- 内容区域 -->
+  <rect x="28" y="78" width="72" height="12" rx="2" ry="2" fill="#f0f0f0" opacity="0.8"/>
+  
+  <!-- 底部统计信息 -->
+  <circle cx="32" cy="88" r="2" fill="#ff4757" opacity="0.8"/>
+  <text x="38" y="91" font-family="sans-serif" font-size="8" fill="#666666">999</text>
+  
+  <!-- 装饰性元素 -->
+  <circle cx="95" cy="35" r="3" fill="#ffa502" opacity="0.6"/>
+  <circle cx="105" cy="45" r="2" fill="#ff6b6b" opacity="0.6"/>
+</svg>
