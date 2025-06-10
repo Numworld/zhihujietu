@@ -10,7 +10,7 @@
 
 ## 安装方法
 
-1. 下载或克隆此项目到本地
+1. 下载此项目文件到本地项目文件夹
 ```bash
 git clone https://github.com/YOUR_USERNAME/zhihujietu-extension.git
 ```
